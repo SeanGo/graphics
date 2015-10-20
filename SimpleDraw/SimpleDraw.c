@@ -25,16 +25,26 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include <GL/glut.h>    // OpenGL Graphics Utility Library
 #include "SimpleDraw.h"
 
+
+typedef struct {
+    double x;
+    double y;
+} POINT2D;
+
 // These variables control the current mode
 int CurrentMode = 0;
-const int NumModes = 5;
+const int NumModes = 8;
+const double pi = 3.1415926535897932384;
 
 // These variables set the dimensions of the rectanglar region we wish to view.
 const double Xmin = 0.0, Xmax = 3.0;
 const double Ymin = 0.0, Ymax = 3.0;
+
+static POINT2D g5points[10];
 
 // glutKeyboardFunc is called below to set this function to handle
 //      all "normal" ascii key presses.
@@ -46,12 +56,104 @@ void myKeyboardFunc( unsigned char key, int x, int y )
     case ' ':                                   // Space bar
         // Increment the current mode, and tell operating system screen needs redrawing
         CurrentMode = (CurrentMode+1)%NumModes;
-        glutPostRedisplay();
         break;
 
     case 27:                                    // "27" is theEscape key
         glutDestroyWindow(glutGetWindow());
+        return;
     }
+
+    glutPostRedisplay();
+}
+
+static void cal_5points(void)
+{
+    double R = 1.0;
+    double r = R / 4;
+    double x0 = 1.0;
+    double y0 = 1.0;
+    double angle5 = 2 * pi / 5;
+    double angle10 = 2 * pi / 10;
+
+    g5points[0].x = x0;
+    g5points[0].y = y0 + R;
+    g5points[2].x = x0 - R * sin(angle5);
+    g5points[2].y = y0 + R * cos(angle5);
+    g5points[4].x = x0 - R * sin(angle5 / 2);
+    g5points[4].y = y0 - R * cos(angle5 / 2);
+    g5points[6].x = x0 + R * sin(angle5 / 2);
+    g5points[6].y = y0 - R * cos(angle5 / 2);
+    g5points[8].x = x0 + R * sin(angle5);
+    g5points[8].y = y0 + R * cos(angle5);
+
+    g5points[1].x = x0 - r * sin(angle10);
+    g5points[1].y = y0 + r * cos(angle10);
+    g5points[3].x = x0 - r * sin(angle5);
+    g5points[3].y = y0 - r * cos(angle5);
+    g5points[5].x = x0;
+    g5points[5].y = y0 - r;
+    g5points[7].x = x0 + r * sin(angle5);
+    g5points[7].y = y0 - r * cos(angle5);
+    g5points[9].x = x0 + r * sin(angle10);
+    g5points[9].y = y0 + r * cos(angle10);
+}
+
+void drawFiveStar_1(void)
+{
+    int i;
+    glBegin( GL_LINE_LOOP );
+    for (i = 0; i < 10; i++)
+        glVertex2f(g5points[i].x, g5points[i].y);
+    glEnd();
+}
+
+void drawFiveStar_2(void)
+{
+    int i;
+    glBegin( GL_LINE_LOOP );
+
+    glVertex2f(g5points[0].x, g5points[0].y);
+    glVertex2f(g5points[5].x, g5points[5].y);
+    glVertex2f(g5points[6].x, g5points[6].y);
+    glVertex2f(g5points[1].x, g5points[1].y);
+    glVertex2f(g5points[2].x, g5points[2].y);
+    glVertex2f(g5points[7].x, g5points[7].y);
+    glVertex2f(g5points[8].x, g5points[8].y);
+    glVertex2f(g5points[3].x, g5points[3].y);
+    glVertex2f(g5points[4].x, g5points[4].y);
+    glVertex2f(g5points[9].x, g5points[9].y);
+
+    glEnd();
+}
+
+void drawFiveStar_3(void)
+{
+    int i;
+    glBegin( GL_LINE_LOOP );
+
+    glVertex2f(g5points[0].x, g5points[0].y);
+    glVertex2f(g5points[5].x, g5points[5].y);
+    glVertex2f(g5points[6].x, g5points[6].y);
+    glVertex2f(g5points[1].x, g5points[1].y);
+    glVertex2f(g5points[2].x, g5points[2].y);
+    glVertex2f(g5points[7].x, g5points[7].y);
+    glVertex2f(g5points[8].x, g5points[8].y);
+    glVertex2f(g5points[3].x, g5points[3].y);
+    glVertex2f(g5points[4].x, g5points[4].y);
+    glVertex2f(g5points[9].x, g5points[9].y);
+
+    glVertex2f(g5points[0].x, g5points[0].y);
+    glVertex2f(g5points[5].x, g5points[5].y);
+    glVertex2f(g5points[4].x, g5points[4].y);
+    glVertex2f(g5points[9].x, g5points[9].y);
+    glVertex2f(g5points[8].x, g5points[8].y);
+    glVertex2f(g5points[3].x, g5points[3].y);
+    glVertex2f(g5points[2].x, g5points[2].y);
+    glVertex2f(g5points[7].x, g5points[7].y);
+    glVertex2f(g5points[6].x, g5points[6].y);
+    glVertex2f(g5points[1].x, g5points[1].y);
+
+    glEnd();
 }
 
 
@@ -121,6 +223,16 @@ void drawScene(void)
         glVertex3f(0.337, 0.786, 0.0);
         glVertex3f(0.597, 0.636, 0.0);
         glEnd();
+        break;
+    case 5:
+        drawFiveStar_1();
+        break;
+    case 6:
+        drawFiveStar_2();
+        break;
+    case 7:
+        drawFiveStar_3();
+        break;
     }
 
     // Flush the pipeline.  (Not usually necessary.)
@@ -202,6 +314,7 @@ void resizeWindow(int w, int h)
 // Set up OpenGL, define the callbacks and start the main loop
 int main( int argc, char** argv )
 {
+    cal_5points();
     glutInit(&argc,argv);
 
     // The image is not animated so single buffering is OK. 
