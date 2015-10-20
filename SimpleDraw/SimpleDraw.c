@@ -37,14 +37,14 @@ typedef struct {
 
 // These variables control the current mode
 int CurrentMode = 0;
-const int NumModes = 8;
+const int NumModes = 11;
 const double pi = 3.1415926535897932384;
 
 // These variables set the dimensions of the rectanglar region we wish to view.
 const double Xmin = 0.0, Xmax = 3.0;
 const double Ymin = 0.0, Ymax = 3.0;
 
-static POINT2D g5points[10];
+static POINT2D g5points[12];
 
 // glutKeyboardFunc is called below to set this function to handle
 //      all "normal" ascii key presses.
@@ -96,6 +96,12 @@ static void cal_5points(void)
     g5points[7].y = y0 - r * cos(angle5);
     g5points[9].x = x0 + r * sin(angle10);
     g5points[9].y = y0 + r * cos(angle10);
+
+    g5points[10].x = g5points[0].x;
+    g5points[10].y = g5points[0].y;
+
+    g5points[11].x = x0;
+    g5points[11].y = y0;
 }
 
 void drawFiveStar_1(void)
@@ -156,6 +162,54 @@ void drawFiveStar_3(void)
     glEnd();
 }
 
+
+void drawFiveStar_4(void)
+{
+    int i;
+    GLfloat colors[3][3] = {
+        {1.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0},
+        {0.0, 0.0, 1.0},
+    };
+
+    glBegin( GL_TRIANGLES );
+    for (i = 0; i < 10; ++i) {
+        glColor3fv(colors[i % 3]);
+        glVertex2f(g5points[i].x, g5points[i].y);
+        glVertex2f(g5points[i + 1].x, g5points[i + 1].y);
+        glVertex2f(g5points[11].x, g5points[11].y);
+    }
+    glEnd();
+}
+
+void drawFiveStar_5(void)
+{
+    int i;
+    glBegin( GL_TRIANGLE_FAN );
+    glVertex2f(g5points[11].x, g5points[11].y);
+    for (i = 0; i < 11; ++i)
+        glVertex2f(g5points[i].x, g5points[i].y);
+    glEnd();
+}
+
+void drawFiveStar_6(void)
+{
+    int i;
+    GLfloat colors[3][3] = {
+        {1.0, 0.0, 0.0},
+        {0.0, 1.0, 0.0},
+        {0.0, 0.0, 1.0},
+    };
+
+    glBegin( GL_TRIANGLE_STRIP );
+    for (i = 0; i < 10; ++i) {
+        glColor3fv(colors[i % 3]);
+        glVertex2f(g5points[i].x, g5points[i].y);
+        glVertex2f(g5points[i + 1].x, g5points[i + 1].y);
+        glVertex2f(g5points[11].x, g5points[11].y);
+    }
+    glEnd();
+}
 
 /*
  * drawScene() handles the animation and the redrawing of the
@@ -232,6 +286,15 @@ void drawScene(void)
         break;
     case 7:
         drawFiveStar_3();
+        break;
+    case 8:
+        drawFiveStar_4();
+        break;
+    case 9:
+        drawFiveStar_5();
+        break;
+    case 10:
+        drawFiveStar_6();
         break;
     }
 
