@@ -318,7 +318,6 @@ void initRendering()
     glLineWidth(5);
 */
 
-/*
     // The following commands should induce OpenGL to create round points and 
     //  antialias points and lines.  (This is implementation dependent unfortunately).
     glEnable(GL_POINT_SMOOTH);
@@ -327,7 +326,6 @@ void initRendering()
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);     // Antialias the lines
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-*/
 
 }
 
