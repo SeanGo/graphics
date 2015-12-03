@@ -3,5 +3,11 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += main.c
+LIBS += -lglut -lGL -lGLU -lm
+
+SOURCES += \
+    SimpleDraw.c
+
+HEADERS += \
+    SimpleDraw.h
 

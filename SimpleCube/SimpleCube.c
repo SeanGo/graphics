@@ -49,7 +49,7 @@ float CubeVetex[9][3] = {
 
 // glutKeyboardFunc is called below to set this function to handle
 //      all "normal" key presses.
-void myKeyboardFunc( unsigned char key, int UNUSED(x), int UNUSED(y) )
+void myKeyboardFunc( unsigned char key, int x, int y )
 {
     switch ( key ) {
     case 'a':
@@ -89,7 +89,7 @@ void myKeyboardFunc( unsigned char key, int UNUSED(x), int UNUSED(y) )
 // glutSpecialFunc is called below to set this function to handle
 //      all "special" key presses.  See glut.h for the names of
 //      special keys.
-void mySpecialKeyFunc( int key, int UNUSED(x), int UNUSED(y) )
+void mySpecialKeyFunc( int key, int x, int y )
 {
     switch ( key ) {
     case GLUT_KEY_UP:
