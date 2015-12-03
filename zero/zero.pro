@@ -3,7 +3,7 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-INCLUDEPATH += ../../../include/vecmath
+INCLUDEPATH += ../include/vecmath
 LIBS += -lglut -lGL -lGLU -lm
 
 SOURCES += main.cpp
